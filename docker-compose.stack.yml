@@ -13,7 +13,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.label.type==db"
+          - "node.labels.type==db"
 
   app:
     image: nextcloud:fpm-alpine
@@ -29,7 +29,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.label.type==nextcloud"
+          - "node.labels.type==nextcloud"
   web:
     image: nginx:alpine
     restart: always
@@ -43,7 +43,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.label.type==nextcloud"
+          - "node.labels.type==nextcloud"
 volumes:
   db:
     driver_opts:
