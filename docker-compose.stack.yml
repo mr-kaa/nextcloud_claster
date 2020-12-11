@@ -29,7 +29,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.role==manager"
+          - "node.label.type==nextcloud"
   web:
     image: nginx:alpine
     restart: always
@@ -43,7 +43,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.role==manager"
+          - "node.label.type==nextcloud"
 volumes:
   db:
     driver_opts:
