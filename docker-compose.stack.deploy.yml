@@ -8,8 +8,12 @@ services:
       - db:/var/lib/postgresql/data
     env_file:
       - db.env
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
+    deploy:
+      placement:
+        constraints:
+          - "node.label.type==db"
 
   app:
     image: nextcloud:fpm-alpine
@@ -22,23 +26,30 @@ services:
       - db.env
     depends_on:
       - db
-
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
   web:
-    build: ./web
+    image: nginx:alpine
     restart: always
     ports:
       - 8080:80
     volumes:
+      - /home/shved/120G/VOLUMES/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - nextcloud:/var/www/html:ro
     depends_on:
       - app
-
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
 volumes:
   db:
     driver_opts:
       type: none
       o: bind
-      device: /home/shved/Passport/VOLUMES/db
+      device: /home/shved/120G/VOLUMES/db
   nextcloud:
     driver_opts:
       type: none
